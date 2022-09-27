@@ -1,0 +1,29 @@
+{
+	"name": "teddy-foundry-utilities",
+	"title": "Teddy's Foundry Utilities",
+	"description": "A collection of tools to organize and manipulate data in Foundry VTT.",
+	"authors": [{
+		"name": "Teddy"
+	}],
+	"version": "0.1",
+	"minimumCoreVersion": "10",
+	"compatibleCoreVersion": "10",
+	"esmodules": [
+		"scripts/functions.mjs",
+		"scripts/utilities.mjs"
+	],
+	"styles": [
+		"styles/teddy-foundry-utilities.css"
+	],
+	"packs": [
+	{
+		"name": "tfu-macros",
+		"label": "Teddy's Utility Macros",
+		"path": "packs/tfu-macros.db",
+		"type": "Macro",
+		"module": "teddy-foundry-utilities"
+	}
+	],
+	"manifest": "https://raw.githubusercontent.com/DaTedinator/teddy-foundry-utilities/master/module.json",
+	"download": "https://github.com/DaTedinator/teddy-foundry-utilities/archive/v0.0.0.zip"
+}
