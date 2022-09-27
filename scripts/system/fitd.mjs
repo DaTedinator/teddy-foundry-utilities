@@ -378,16 +378,18 @@ function generateBiography(d={}, plaintext=true) {
     return "<p>" + description.join("</p>\n\n<p>") + "</p>";
 }
 
-async function generateClock(name, size=4, type="job", subtype="good", startFull=false) {
+async function generateClockActor(name, size=4, type="job", subtype="good", startFull=false) {
     if (name === "") name = "Clock";
 
-    if (!["4","6","8","10","12"].includes(size)) {
+    size = parseInt(size);
+
+    if (![4,6,8,10,12].includes(size)) {
         console.log(`ERROR: generateClock was passed an incorrect size (${size}).`)
-        size = "4";
+        size = 4;
     }
     const progress = startFull ? size : 0;
 
-    let color = "blue",
+    let color = "yellow",
         folder = "Other";
 
     switch(type) {
@@ -426,7 +428,14 @@ async function generateClock(name, size=4, type="job", subtype="good", startFull
             scale: 1,
             disposition: 0,
             displayName: 50,
-            actorLink: true
+            actorLink: true,
+            flags: {
+                "teddy-foundry-utilities": {
+                    "clockType": type,
+                    "clockSubtype": subtype,
+                    "startedFull": startFull
+                }
+            }
         },
             flags: {
                 "scum-and-villainy": {
@@ -434,6 +443,11 @@ async function generateClock(name, size=4, type="job", subtype="good", startFull
                     "progress": progress,
                     "size": size,
                     "theme": color
+                },
+                "teddy-foundry-utilities": {
+                    "clockType": type,
+                    "clockSubtype": subtype,
+                    "startedFull": startFull
                 }
             }
         },
@@ -442,6 +456,29 @@ async function generateClock(name, size=4, type="job", subtype="good", startFull
     tfu.organize("actors","##");
 
     return clockActor;
+}
+
+async function generateClockToken(clockActor, clockZones={}) {
+    const scene = canvas.scene,
+          sceneName = scene.name;
+          sceneWidth = Math.floor(scene.width*(1+scene.padding)),
+          sceneHeight = Math.floor(scene.height*(1+scene.padding)),
+          sceneCenterX = Math.floor(sceneWidth/2 - scene.grid.size/2),
+          sceneCenterY = Math.floor(sceneHeight/2 - scene.grid.size/2);
+
+    const sceneTokens = scene.tokens.contents,
+          clockTokens = sceneTokens.filter(token.getFlag("teddy-foundry-utilities",clockType) !== undefined);
+
+    const clockType = clockActor.getFlag("teddy-foundry-utilities","clockType"),
+          clockSubtype = clockActor.getFlag("teddy-foundry-utilities","clockSubtype") || "Default",
+          clockFullType = `${clockType} / ${clockSubtype}`;
+    
+    if (clockZones[clockFullType] === undefined) {
+        await canvas.scene.createEmbeddedDocuments("Token",[await clockActor.getTokenData({x:sceneCenterX,y:sceneCenterY})]) 
+    } else {
+        let clockX = 0,
+            clockY = 0;
+    }
 }
 
 export const fitd = {
@@ -459,5 +496,6 @@ export const fitd = {
     generateJobJournal:generateJobJournal,
     generateJobs:generateJobs,
     generateNPC:generateNPC,
-    generateClock:generateClock
+    generateClockActor:generateClockActor,
+    generateClockToken:generateClockToken
 }

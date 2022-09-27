@@ -6,8 +6,8 @@ const choices = await tfu.dialog.choice("New Clock", {
 	type: {
 		type:"dropdown",
 		options: [
-			"job (good)",
-			"job (bad)",
+			"job / good",
+			"job / bad",
 			"long-term project",
 			"other"
 		],
@@ -28,8 +28,8 @@ const choices = await tfu.dialog.choice("New Clock", {
 
 const clockName = choices.clockName,
       size = choices.size,
-      type = choices.type.split(" (")[0],
-      subtype = choices.type.split(" (")[1].split(")")[0];
+      type = choices.type.split(" / ")[0],
+      subtype = choices.type.split(" / ")[1];
 
 console.log(size);
 
