@@ -25,5 +25,5 @@
 	}
 	],
 	"manifest": "https://raw.githubusercontent.com/DaTedinator/teddy-foundry-utilities/master/module.json",
-	"download": "https://github.com/DaTedinator/teddy-foundry-utilities/archive/v0.0.0.zip"
+	"download": "https://github.com/DaTedinator/teddy-foundry-utilities/archive/refs/tags/0.0.0.zip"
 }
